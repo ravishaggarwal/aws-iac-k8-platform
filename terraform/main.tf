@@ -19,9 +19,12 @@ module "vpc" {
   private_subnets = ["10.40.11.0/24", "10.40.12.0/24", "10.40.13.0/24"]
   public_subnets  = ["10.40.101.0/24", "10.40.102.0/24", "10.40.103.0/24"]
 
+  # Allow outbound internet connection
   enable_nat_gateway = true
+  #Avoids forcing all private subnets to share one NAT gateway
   single_nat_gateway = false
 
+  # below are tags only configurations to allow public subnet for internet traffic allocation.
   public_subnet_tags = {
     "kubernetes.io/role/elb" = "1"
   }
@@ -42,6 +45,7 @@ module "eks" {
 
   endpoint_public_access = true
 
+ # this give pods to give aws service access , provide k8 eks Service account role, odic and Iam role assocaition exist.
   enable_irsa = true
 
   enable_cluster_creator_admin_permissions = true
@@ -85,8 +89,7 @@ module "eks" {
   tags = local.tags
 }
 
-# Route 53 hosted zone. If the domain is registered elsewhere, update its
-# nameservers at the registrar with the NS output from this configuration.
+
 resource "aws_route53_zone" "main" {
   name = var.domain_name
   tags = local.tags
