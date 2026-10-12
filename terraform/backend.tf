@@ -2,8 +2,8 @@
 # organization's naming/security standard before enabling this.
 terraform {
   backend "s3" {
-    bucket       = "AusPost-terraform-state-bucket"
-    key          = "auspost/devsecops/eks.tfstate"
+    bucket       = "app-k8-deployment-terraform-state-bucket"
+    key          = "app-k8-deployment/devsecops/eks.tfstate"
     region       = "ap-southeast-2"
     encrypt      = true
     use_lockfile = true
