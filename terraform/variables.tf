@@ -5,7 +5,7 @@ variable "aws_region" {
 
 variable "cluster_name" {
   type    = string
-  default = "auspost-eks"
+  default = "app-k8-deployment-eks"
 }
 
 variable "environment" {
@@ -15,7 +15,7 @@ variable "environment" {
 
 variable "domain_name" {
   type    = string
-  default = "myauspost.com.au"
+  default = "myapp-k8-deployment.com.au"
 }
 
 variable "vpc_cidr" {

@@ -6,7 +6,7 @@ set -euo pipefail
 : "${DOMAIN_NAME:?}"
 
 INGRESS_ADDRESS="$(
-  kubectl get ingress auspost-health -n "${NAMESPACE:-auspost-prod}" \
+  kubectl get ingress app-k8-deployment-health -n "${NAMESPACE:-app-k8-deployment-prod}" \
     -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
 )"
 
@@ -14,7 +14,7 @@ test -n "$INGRESS_ADDRESS"
 
 cat >/tmp/route53-alias.json <<EOF
 {
-  "Comment": "Alias ${DOMAIN_NAME} to AusPost application ALB",
+  "Comment": "Alias ${DOMAIN_NAME} to app-k8-deployment application ALB",
   "Changes": [{
     "Action": "UPSERT",
     "ResourceRecordSet": {

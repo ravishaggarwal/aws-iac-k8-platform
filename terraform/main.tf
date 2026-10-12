@@ -2,7 +2,7 @@ locals {
   name = var.cluster_name
 
   tags = {
-    Project     = "AusPostDevSecOps"
+    Project     = "app-k8-deploymentDevSecOps"
     ManagedBy   = "Terraform"
     Environment = var.environment
   }
@@ -45,7 +45,7 @@ module "eks" {
 
   endpoint_public_access = true
 
- # this give pods to give aws service access , provide k8 eks Service account role, odic and Iam role assocaition exist.
+  # this give pods to give aws service access , provide k8 eks Service account role, odic and Iam role assocaition exist.
   enable_irsa = true
 
   enable_cluster_creator_admin_permissions = true
@@ -95,6 +95,7 @@ resource "aws_route53_zone" "main" {
   tags = local.tags
 }
 
+# create ACM certificate 
 resource "aws_acm_certificate" "app" {
   domain_name       = var.domain_name
   validation_method = "DNS"
@@ -106,6 +107,7 @@ resource "aws_acm_certificate" "app" {
   tags = local.tags
 }
 
+# Create Route 53 entry for all cName in the certicate
 resource "aws_route53_record" "cert_validation" {
   for_each = {
     for dvo in aws_acm_certificate.app.domain_validation_options :
@@ -123,6 +125,7 @@ resource "aws_route53_record" "cert_validation" {
   records = [each.value.record]
 }
 
+#verify the domain name and issue certificate.
 resource "aws_acm_certificate_validation" "app" {
   certificate_arn         = aws_acm_certificate.app.arn
   validation_record_fqdns = [for r in aws_route53_record.cert_validation : r.fqdn]

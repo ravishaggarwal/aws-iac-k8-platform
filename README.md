@@ -40,7 +40,7 @@ kubectl get nodes
 Use dedicated least-privilege IAM roles. The AWS Load Balancer Controller must not receive blanket administrator permissions. Application workloads requiring AWS APIs should use their own workload identity/role rather than node credentials.
 
 ## DNS/TLS
-The target host is `myauspost.com.au`. Terraform establishes Route53/ACM prerequisites; the Platform repository's Ingress causes the controller to create the ALB. If DNS is registered elsewhere, delegate the appropriate Route53 nameservers/records according to your organisation's DNS model.
+The target host is `myapp-k8-deployment.com.au`. Terraform establishes Route53/ACM prerequisites; the Platform repository's Ingress causes the controller to create the ALB. If DNS is registered elsewhere, delegate the appropriate Route53 nameservers/records according to your organisation's DNS model.
 
 ## State and production hardening
 Use an encrypted remote Terraform backend with approved locking, strict bucket access and versioning. Review EKS endpoint exposure, KMS, CloudTrail/audit logging, security monitoring, tagging, node AMIs, backup/DR and organisation guardrails before production.
